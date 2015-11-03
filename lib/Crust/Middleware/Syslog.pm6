@@ -2,8 +2,15 @@ use Crust::Middleware;
 use Log::Syslog::Native;
 
 class Crust::Middleware::Syslog is Crust::Middleware { 
+    has $.logger;
+    method new ($app, :$ident) {
+        my %args;
+        %args<ident> = $ident if $ident;
+        my $logger = Log::Syslog::Native.new(|%args);
+        callwith($app, :$logger);
+    }
     method CALL-ME(%env) {
-        my $logger = Log::Syslog::Native.new;
+        my $logger = $.logger;
         %env<p6sgix.logger> = -> $level, $message {
             my $syslog-level = Log::Syslog::Native::Debug;
             given $level {
