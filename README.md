@@ -4,7 +4,7 @@
     use Crust::Middleware::Syslog;
 
     builder {
-        enable 'Syslog';
+        enable 'Syslog', ident => 'MyApp';
         $app;
     }
 
