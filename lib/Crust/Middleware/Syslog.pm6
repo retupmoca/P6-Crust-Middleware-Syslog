@@ -15,7 +15,7 @@ class Crust::Middleware::Syslog is Crust::Middleware {
                 when 'fatal'  { $syslog-level = Log::Syslog::Native::Critical; };
                 when 'alert'  { $syslog-level = Log::Syslog::Native::Alert;    };
             }
-            $logger.log($level, $message);
+            $logger.log($syslog-level, $message);
         };
         return $.app()(%env);
     }
